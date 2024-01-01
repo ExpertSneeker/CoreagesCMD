@@ -1,4 +1,4 @@
-package com.coreages.coreagescmd;
+package com.coreages.coreagescmd.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

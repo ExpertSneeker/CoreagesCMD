@@ -1,4 +1,4 @@
-package com.coreages.coreagescmd;
+package com.coreages.coreagescmd.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -45,6 +45,12 @@ public class SbCountCommand implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "请输入正确的指令格式: /sbcount <半径>");
                     return true;
                 }
+            }
+
+            //防止半径过大卡服
+            if(radius > 100 || radius < 1){
+                player.sendMessage(ChatColor.RED + "半径的范围应该在 1-100 之间");
+                return true;
             }
 
             // 获取半径内的实体列表

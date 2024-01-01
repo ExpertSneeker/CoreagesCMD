@@ -1,5 +1,7 @@
 package com.coreages.coreagescmd;
 
+import com.coreages.coreagescmd.command.SbCommand;
+import com.coreages.coreagescmd.command.SbCountCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
