@@ -13,3 +13,8 @@ commands:
     usage: /<command>
     permission: coreages.command.sbcount
     permission-message: No Permission
+  sblook:
+    description: Count the number of invisible armor_stand, and inspect armor_stand' local.
+    usage: /<command>
+    permission: coreages.command.sblook
+    permission-message: No Permission
