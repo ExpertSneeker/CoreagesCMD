@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -27,6 +26,7 @@ import static com.coreages.coreagescmd.CoreagesCMD.plugin;
  */
 public class SbLookCommand implements CommandExecutor {
 
+    //创建哈希表，用于设置指令CD
     private final HashMap<UUID,Long> cooldown;
 
     public SbLookCommand(){
