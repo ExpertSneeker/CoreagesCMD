@@ -5,6 +5,7 @@ import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.coreages.coreagescmd.command.SbCommand;
 import com.coreages.coreagescmd.command.SbCountCommand;
 import com.coreages.coreagescmd.command.SbLookCommand;
+import com.coreages.coreagescmd.event.ItemFrameListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +17,7 @@ public final class CoreagesCMD extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getServer().getPluginManager().registerEvents(new ItemFrameListener(), this);
         plugin = this;
         resApi = Residence.getInstance().getAPI();
         // Plugin startup logic
