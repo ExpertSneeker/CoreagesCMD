@@ -1,9 +1,6 @@
 package com.coreages.coreagescmd.command;
 
-import com.bekvon.bukkit.residence.Residence;
-import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
-import com.bekvon.bukkit.residence.containers.ResidencePlayer;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import org.bukkit.ChatColor;
@@ -15,11 +12,8 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.awt.*;
 import java.util.List;
 
-import static com.bekvon.bukkit.residence.containers.Flags.FlagMode.Residence;
-import static com.bekvon.bukkit.residence.containers.Flags.build;
 import static com.coreages.coreagescmd.CoreagesCMD.resApi;
 
 /**
