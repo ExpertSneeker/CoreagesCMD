@@ -3,7 +3,10 @@ package com.coreages.coreagescmd.event;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.ItemTag;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Item;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.ItemFrame;
@@ -30,46 +33,27 @@ public class ItemFrameListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.getRightClicked() instanceof ItemFrame) {
             ItemFrame frame = (ItemFrame) event.getRightClicked();
-            ItemStack item = frame.getItem();
+            ItemStack itemStack = frame.getItem();
 
-            if (item != null && item.getType() != Material.AIR) {
+            if (itemStack != null && itemStack.getType() != Material.AIR) {
                 Player player = event.getPlayer();
-                ItemMeta meta = item.getItemMeta();
+                event.setCancelled(true);
 
-                if (meta != null) {
-                    // Building the hover text
-                    ComponentBuilder hoverText = new ComponentBuilder("");
+                TextComponent component;
 
-                    if (!meta.getDisplayName().isEmpty()) {
-                        hoverText.append(meta.getDisplayName());
-                    }else{
-                        hoverText.append(item.getType().toString());
-                    }
+                String nbt = itemStack.hasItemMeta() ? itemStack.getItemMeta().getAsString() : "{}";
+                Item contents = new Item(itemStack.getType().getKey().toString(), itemStack.getAmount(), ItemTag.ofNbt(nbt));
 
-                    if (meta.hasEnchants()) {
-                        meta.getEnchants().forEach((enchant, level) -> {
-                            hoverText.append("\n" + ChatColor.GRAY + enchant.getName() + " " + level);
-                        });
-                    }
-
-                    if (meta.getLore() != null) {
-                        for (String lore : meta.getLore()) {
-                            hoverText.append("\n" + lore);
-                        }
-                    }
-
-                    TextComponent message;
-
-                    if (!meta.getDisplayName().isEmpty()) {
-                        message = new TextComponent(ChatColor.GRAY + "[" + meta.getDisplayName() + ChatColor.GRAY + "]");
-                    }else {
-                        message = new TextComponent(ChatColor.GRAY + "[" + item.getType() + ChatColor.GRAY + "]");
-                    }
-
-                    message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText.create()));
-
-                    player.spigot().sendMessage(message);
+                //获取物品名并实例化
+                if (!itemStack.getItemMeta().getDisplayName().isEmpty()) {
+                    component = new TextComponent(ChatColor.GRAY + "[" + itemStack.getItemMeta().getDisplayName() + ChatColor.GRAY + "]");
+                }else {
+                    component = new TextComponent(ChatColor.GRAY + "[" + itemStack.getType() + ChatColor.GRAY + "]");
                 }
+
+                component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, contents));
+
+                player.spigot().sendMessage(component);
             }
         }
     }
