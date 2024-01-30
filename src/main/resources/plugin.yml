@@ -18,3 +18,8 @@ commands:
     usage: /<command>
     permission: coreages.command.sblook
     permission-message: No Permission
+  fc:
+    description: Enable or Disable frame to chat.
+    usage: /<command>
+    permission: coreages.command.fc
+    permission-message: No Permission
