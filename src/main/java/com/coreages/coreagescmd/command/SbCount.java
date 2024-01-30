@@ -19,7 +19,7 @@ import java.util.List;
  * @Create 2023/12/31 19:58
  * @Version 1.0
  */
-public class SbCountCommand implements CommandExecutor {
+public class SbCount implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 

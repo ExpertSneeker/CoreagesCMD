@@ -25,7 +25,7 @@ import static com.coreages.coreagescmd.CoreagesCMD.resApi;
  * @Create 2023/12/31 19:58
  * @Version 1.0
  */
-public class SbCommand implements CommandExecutor {
+public class Sb implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 

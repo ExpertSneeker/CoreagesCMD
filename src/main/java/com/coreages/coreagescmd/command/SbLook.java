@@ -24,12 +24,12 @@ import static com.coreages.coreagescmd.CoreagesCMD.plugin;
  * @Create 2023/12/31 19:58
  * @Version 1.0
  */
-public class SbLookCommand implements CommandExecutor {
+public class SbLook implements CommandExecutor {
 
     //创建哈希表，用于设置指令CD
     private final HashMap<UUID,Long> cooldown;
 
-    public SbLookCommand(){
+    public SbLook(){
         this.cooldown = new HashMap<>();
     }
 
