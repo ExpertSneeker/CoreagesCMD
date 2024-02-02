@@ -1,7 +1,5 @@
 package com.coreages.coreagescmd.event;
 
-import com.coreages.coreagescmd.util.LoreHasKey;
-import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.ItemTag;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -9,16 +7,20 @@ import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
+import java.util.*;
+
 import static com.coreages.coreagescmd.CoreagesCMD.plugin;
+import static com.coreages.coreagescmd.CoreagesCMD.loreUtils;
 
 /**
  * ClassName: EventListener
@@ -80,11 +82,40 @@ public class CoreagesListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
-        LoreHasKey loreHasKey = new LoreHasKey();
 
-        if (loreHasKey.containsLoreKeyword(player,"诡异菌索")){
+        if (loreUtils.loreKeywordArmor(player,"诡异菌索")){
             player.damage(10);
             player.spigot().respawn();
         }
+    }
+
+    //放置头颅时，只能放在方块的上面
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        //获取玩家手中的物品
+        ItemStack itemInHand = event.getItemInHand();
+
+        // 检查放置的是否是玩家头颅
+        if (event.getBlock().getType() == Material.PLAYER_HEAD || event.getBlock().getType() == Material.PLAYER_WALL_HEAD) {
+
+            if (loreUtils.loreKeywordHand(itemInHand, Arrays.asList("货运输出管道", "货运输入管道"))){
+                return;
+            }
+
+            // 检查是否放置在方块的上方
+            if (event.getBlockAgainst().getFace(event.getBlock()) != BlockFace.UP) {
+                // 不是放在上方，取消放置
+                event.setCancelled(true);
+                // 可以向玩家发送一些信息
+                event.getPlayer().sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 此 物品 只能放置在方块的上方!");
+            }
+        }
+
+        //无限方块
+        if (itemInHand.getType().isBlock() && loreUtils.loreKeywordHand(itemInHand, Collections.singletonList("无限方块"))){
+            ItemStack item = event.getItemInHand().clone();
+            event.getPlayer().getInventory().setItem(event.getHand(), item);
+        }
+
     }
 }
