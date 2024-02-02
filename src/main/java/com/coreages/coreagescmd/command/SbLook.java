@@ -36,11 +36,6 @@ public class SbLook implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        //System.out.println("sender" + sender);
-        //System.out.println("command" + command);
-        //System.out.println("label" + label);
-        //System.out.println("args" + Arrays.asList(args));
-
         // 判断命令发送者是否是玩家
         if (sender instanceof Player) {
             // 强制转换为Player对象
