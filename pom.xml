@@ -79,6 +79,13 @@
           <systemPath>${project.basedir}/libs/Residence.jar</systemPath>
       </dependency>
       <dependency>
+          <groupId>com.Zrips</groupId>
+          <artifactId>CMI-API</artifactId>
+          <version>9.6.5.0</version>
+          <scope>system</scope>
+          <systemPath>${project.basedir}/libs/CMI-API.jar</systemPath>
+      </dependency>
+      <dependency>
           <groupId>me.clip</groupId>
           <artifactId>placeholderapi</artifactId>
           <version>2.11.3</version>
