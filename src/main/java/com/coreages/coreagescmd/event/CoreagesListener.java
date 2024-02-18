@@ -1,5 +1,9 @@
 package com.coreages.coreagescmd.event;
 
+import com.Zrips.CMI.CMI;
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.events.CMIPlayerSitEvent;
+import com.bekvon.bukkit.residence.containers.Flags;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.ItemTag;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -12,15 +16,17 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
 import static com.coreages.coreagescmd.CoreagesCMD.plugin;
-import static com.coreages.coreagescmd.CoreagesCMD.loreUtils;
+import static com.coreages.coreagescmd.CoreagesCMD.coreagesUtils;
 
 /**
  * ClassName: EventListener
@@ -77,13 +83,27 @@ public class CoreagesListener implements Listener {
     }
 
 
+    @EventHandler
+    public void onPlayerSit(CMIPlayerSitEvent event) {
+
+        Player player = event.getPlayer();
+        Location loc = event.getChair().getArmorStandLoc();
+
+        if (!coreagesUtils.hasPermission(player, loc, Flags.use)){
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 你没有这个领地的 use 权限, 无法坐在此方块上!");
+        }
+    }
+
+
+
     //死亡时检测装备的lore中是否包含指定关键字，是的话复活
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         Player player = event.getEntity();
 
-        if (loreUtils.loreKeywordArmor(player,"诡异菌索")){
+        if (coreagesUtils.loreKeywordArmor(player,"诡异菌索")){
             player.damage(10);
             player.spigot().respawn();
         }
@@ -98,7 +118,7 @@ public class CoreagesListener implements Listener {
         // 检查放置的是否是玩家头颅
         if (event.getBlock().getType() == Material.PLAYER_HEAD || event.getBlock().getType() == Material.PLAYER_WALL_HEAD) {
 
-            if (loreUtils.loreKeywordHand(itemInHand, Arrays.asList("货运输出管道", "货运输入管道"))){
+            if (coreagesUtils.loreKeywordHand(itemInHand, Arrays.asList("货运输出管道", "货运输入管道"))){
                 return;
             }
 
@@ -109,10 +129,14 @@ public class CoreagesListener implements Listener {
                 // 可以向玩家发送一些信息
                 event.getPlayer().sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 此 物品 只能放置在方块的上方!");
             }
+            if (event.getBlockAgainst().getType() == Material.STONE && coreagesUtils.loreKeywordHand(itemInHand, Collections.singletonList("燃料容量"))){
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 火箭 不能直接放置在发射台上, 请先替换为其他方块, 放置火箭后再替换为发射台!");
+            }
         }
 
         //无限方块
-        if (itemInHand.getType().isBlock() && loreUtils.loreKeywordHand(itemInHand, Collections.singletonList("无限方块"))){
+        if (itemInHand.getType().isBlock() && coreagesUtils.loreKeywordHand(itemInHand, Collections.singletonList("无限方块"))){
             ItemStack item = event.getItemInHand().clone();
             event.getPlayer().getInventory().setItem(event.getHand(), item);
         }
