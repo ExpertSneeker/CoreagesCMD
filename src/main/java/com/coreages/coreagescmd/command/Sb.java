@@ -1,10 +1,7 @@
 package com.coreages.coreagescmd.command;
 
 import com.bekvon.bukkit.residence.containers.Flags;
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-import static com.coreages.coreagescmd.CoreagesCMD.resApi;
+import static com.coreages.coreagescmd.CoreagesCMD.coreagesUtils;
 
 /**
  * ClassName: SbCommand
@@ -35,39 +32,34 @@ public class Sb implements CommandExecutor {
             // 强制转换为Player对象
             Player player = (Player) sender;
 
-            //获取玩家的位置
-            Location loc = player.getLocation();
+            // 检查的权限
+            Flags check = Flags.destroy;
 
-            //检测玩家的位置是否为领地
-            if(resApi.getResidenceManager().getByLoc(loc) != null){
-                //获取领地
-                ClaimedResidence res = resApi.getResidenceManager().getByLoc(loc);
-                //设置要检查的权限
-                Flags check = Flags.destroy;
-                //获取领地权限
-                FlagPermissions perms = res.getPermissions();
-                //检查玩家是否拥有权限
-                if (!perms.playerHas(player, check, true)){
-                    player.sendMessage(ChatColor.RED + "你没有当前领地的 " + check + " 权限, 操作失败!");
-                    return true;
-                };
-            }
-
-
-            // 获取玩家周围5格内的所有实体
-            List<Entity> nearbyEntities = player.getNearbyEntities(5, 5, 5);
+            // 获取玩家周围10格内的所有实体
+            List<Entity> nearbyEntities = player.getNearbyEntities(10, 10, 10);
+            int failcount = 0;
             int count = 0;
             // 遍历实体列表
             for (Entity entity : nearbyEntities) {
                 // 判断实体是否是隐形盔甲架
                 if (entity instanceof ArmorStand && ((ArmorStand) entity).isInvisible()) {
-                    // 删除实体
-                    entity.remove();
-                    count++;
+                    if (coreagesUtils.hasPermission(player, entity.getLocation() , check) || player.hasPermission("coreages.command.sb.admin")){
+                        // 删除实体
+                        entity.remove();
+                        count++;
+                    }else {
+                        failcount++;
+                    }
                 }
             }
             // 向玩家发送消息
-            player.sendMessage(ChatColor.YELLOW +"已清理周围5格内的 " + count + " 个隐形盔甲架");
+            if (player.hasPermission("coreages.command.sb.admin")){
+                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 已无视权限清理附近5格的 " + count + " 个隐形盔甲架");
+            }else if(failcount == 0) {
+                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 成功清理附近5格的 " + count + " 个隐形盔甲架");
+            }else {
+                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 成功清理附近5格的 " + count + " 个隐形盔甲架, 清理失败" + failcount + "个, 原因: 缺少盔甲架所在领地的权限: " + check);
+            }
         }
         // 返回true表示命令执行成功
         return true;
