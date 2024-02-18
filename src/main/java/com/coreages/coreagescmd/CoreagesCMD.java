@@ -7,7 +7,7 @@ import com.coreages.coreagescmd.command.Sb;
 import com.coreages.coreagescmd.command.SbCount;
 import com.coreages.coreagescmd.command.SbLook;
 import com.coreages.coreagescmd.event.CoreagesListener;
-import com.coreages.coreagescmd.util.LoreUtils;
+import com.coreages.coreagescmd.util.CoreagesUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class CoreagesCMD extends JavaPlugin {
     public static CoreagesCMD plugin;
     public static ResidenceApi resApi;
-    public static LoreUtils loreUtils;
+    public static CoreagesUtils coreagesUtils;
     private FrameToChat frameToChat;
 
     @Override
@@ -25,7 +25,7 @@ public final class CoreagesCMD extends JavaPlugin {
         getCommand("fc").setExecutor(frameToChat);
         plugin = this;
         resApi = Residence.getInstance().getAPI();
-        loreUtils = new LoreUtils();
+        coreagesUtils = new CoreagesUtils();
         // Plugin startup logic
         Bukkit.getPluginCommand("sb").setExecutor(new Sb());
         Bukkit.getPluginCommand("sbcount").setExecutor(new SbCount());
