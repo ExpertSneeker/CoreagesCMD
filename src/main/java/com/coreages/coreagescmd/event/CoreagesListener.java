@@ -22,6 +22,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -114,6 +115,7 @@ public class CoreagesListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         //获取玩家手中的物品
         ItemStack itemInHand = event.getItemInHand();
+        Player player = event.getPlayer();
 
         // 检查放置的是否是玩家头颅
         if (event.getBlock().getType() == Material.PLAYER_HEAD || event.getBlock().getType() == Material.PLAYER_WALL_HEAD) {
@@ -127,18 +129,18 @@ public class CoreagesListener implements Listener {
                 // 不是放在上方，取消放置
                 event.setCancelled(true);
                 // 可以向玩家发送一些信息
-                event.getPlayer().sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 此 物品 只能放置在方块的上方!");
+                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 此 物品 只能放置在方块的上方!");
             }
             if (event.getBlockAgainst().getType() == Material.STONE && coreagesUtils.loreKeywordHand(itemInHand, Collections.singletonList("燃料容量"))){
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 火箭 不能直接放置在发射台上, 请先替换为其他方块, 放置火箭后再替换为发射台!");
+                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 火箭 不能直接放置在发射台上, 请先替换为其他方块, 放置火箭后再替换为发射台!");
             }
         }
 
         //无限方块
         if (itemInHand.getType().isBlock() && coreagesUtils.loreKeywordHand(itemInHand, Collections.singletonList("无限方块"))){
-            ItemStack item = event.getItemInHand().clone();
-            event.getPlayer().getInventory().setItem(event.getHand(), item);
+            ItemStack item = itemInHand.clone();
+            player.getInventory().setItem(event.getHand(), item);
         }
 
     }
