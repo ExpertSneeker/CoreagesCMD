@@ -1,6 +1,5 @@
 package com.coreages.coreagescmd.command;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +8,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+
+import static com.coreages.coreagescmd.util.MsgUtils.chat;
 
 /**
  * ClassName: SbCommand
@@ -31,20 +32,20 @@ public class SbCount implements CommandExecutor {
             // 获取半径
             int radius;
             if (args.length == 0){
-                player.sendMessage(ChatColor.RED + "请输入正确的指令格式: /sbcount <半径>");
+                chat(player, "&c请输入正确的指令格式: /sbcount <半径>");
                 return true;
             }else {
                 try{
                     radius = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e){
-                    player.sendMessage(ChatColor.RED + "请输入正确的指令格式: /sbcount <半径>");
+                    chat(player, "&c请输入正确的指令格式: /sbcount <半径>");
                     return true;
                 }
             }
 
             //防止半径过大卡服
             if(radius > 100 || radius < 1){
-                player.sendMessage(ChatColor.RED + "半径的范围应该在 1-100 之间");
+                chat(player, "&c半径的范围应该在 1-100 之间");
                 return true;
             }
 
@@ -62,7 +63,7 @@ public class SbCount implements CommandExecutor {
                 }
             }
             // 向玩家发送消息
-            player.sendMessage(ChatColor.YELLOW +"半径 "+ radius +" 内有 " + armor_stand_count + " 个隐形盔甲架");
+            chat(player, "半径 "+ radius +" 内有 " + armor_stand_count + " 个隐形盔甲架");
         }
         // 返回true表示命令执行成功
         return true;

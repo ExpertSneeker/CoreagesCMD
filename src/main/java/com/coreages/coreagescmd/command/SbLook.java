@@ -1,6 +1,7 @@
 package com.coreages.coreagescmd.command;
 
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.coreages.coreagescmd.CoreagesCMD.plugin;
+import static com.coreages.coreagescmd.util.MsgUtils.chat;
 
 /**
  * ClassName: SbCommand
@@ -44,20 +46,20 @@ public class SbLook implements CommandExecutor {
             // 获取半径
             int radius;
             if (args.length == 0){
-                player.sendMessage(ChatColor.RED + "请输入正确的指令格式: /sblook <半径>");
+                chat(player, "&c请输入正确的指令格式: /sblook <半径>");
                 return true;
             }else {
                 try{
                     radius = Integer.parseInt(args[0]);
                 } catch (NumberFormatException e){
-                    player.sendMessage(ChatColor.RED + "请输入正确的指令格式: /sblook <半径>");
+                    chat(player, "&c请输入正确的指令格式: /sblook <半径>");
                     return true;
                 }
             }
 
             //防止半径过大卡服
             if(radius > 100 || radius < 1){
-                player.sendMessage(ChatColor.RED + "半径的范围应该在 1-100 之间");
+                chat(player, "&c半径的范围应该在 1-100 之间");
                 return true;
             }
 
@@ -71,7 +73,7 @@ public class SbLook implements CommandExecutor {
                 int cd = 10000;
 
                 if (timeElapsed <= cd){
-                    player.sendMessage("指令冷却中, 请等待 " + (cd - timeElapsed) / 1000 + " 秒!" );
+                    chat(player, "指令冷却中, 请等待 " + (cd - timeElapsed) / 1000 + " 秒!");
                     return true;
                 }
             }
@@ -115,7 +117,7 @@ public class SbLook implements CommandExecutor {
                 }
             }
             // 向玩家发送消息
-            player.sendMessage(ChatColor.YELLOW +"半径 "+ radius +" 内有 " + armor_stand_count + " 个隐形盔甲架, 已在盔甲架的位置显示红石粒子");
+            chat(player, "半径 "+ radius +" 内有 " + armor_stand_count + " 个隐形盔甲架, 已在盔甲架的位置显示红石粒子");
 
             this.cooldown.put(player.getUniqueId(),System.currentTimeMillis());
         }

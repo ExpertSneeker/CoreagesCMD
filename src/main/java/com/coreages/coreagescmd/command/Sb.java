@@ -1,7 +1,6 @@
 package com.coreages.coreagescmd.command;
 
 import com.bekvon.bukkit.residence.containers.Flags;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 import static com.coreages.coreagescmd.CoreagesCMD.coreagesUtils;
+import static com.coreages.coreagescmd.util.MsgUtils.chat;
 
 /**
  * ClassName: SbCommand
@@ -54,11 +54,11 @@ public class Sb implements CommandExecutor {
             }
             // 向玩家发送消息
             if (player.hasPermission("coreages.command.sb.admin")){
-                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 已无视权限清理附近5格的 " + count + " 个隐形盔甲架");
+                chat(player, "已无视权限清理附近5格的 " + count + " 个隐形盔甲架");
             }else if(failcount == 0) {
-                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 成功清理附近5格的 " + count + " 个隐形盔甲架");
+                chat(player, "成功清理附近5格的 " + count + " 个隐形盔甲架");
             }else {
-                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 成功清理附近5格的 " + count + " 个隐形盔甲架, 清理失败" + failcount + "个, 原因: 缺少盔甲架所在领地的权限: " + check);
+                chat(player, "成功清理附近5格的 " + count + " 个隐形盔甲架, 清理失败" + failcount + "个, 原因: 缺少盔甲架所在领地的权限: " + check);
             }
         }
         // 返回true表示命令执行成功

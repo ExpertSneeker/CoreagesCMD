@@ -1,7 +1,5 @@
 package com.coreages.coreagescmd.event;
 
-import com.Zrips.CMI.CMI;
-import com.Zrips.CMI.Containers.CMIUser;
 import com.Zrips.CMI.events.CMIPlayerSitEvent;
 import com.bekvon.bukkit.residence.containers.Flags;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -16,18 +14,17 @@ import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 import static com.coreages.coreagescmd.CoreagesCMD.plugin;
 import static com.coreages.coreagescmd.CoreagesCMD.coreagesUtils;
+import static com.coreages.coreagescmd.util.MsgUtils.chat;
+import static com.coreages.coreagescmd.util.MsgUtils.chatActionBar;
 
 /**
  * ClassName: EventListener
@@ -62,26 +59,29 @@ public class CoreagesListener implements Listener {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 event.setCancelled(true);
 
-                TextComponent component;
+                TextComponent mainComponent = new TextComponent(ChatColor.DARK_GRAY + "物品展示框内的物品: ");
 
                 String nbt = itemStack.hasItemMeta() ? itemStack.getItemMeta().getAsString() : "{}";
                 Item contents = new Item(itemStack.getType().getKey().toString(), itemStack.getAmount(), ItemTag.ofNbt(nbt));
 
                 //获取物品名并实例化
                 if (!itemStack.getItemMeta().getDisplayName().isEmpty()) {
-                    component = new TextComponent(ChatColor.GRAY + "[" + itemStack.getItemMeta().getDisplayName() + ChatColor.GRAY + "]");
+                    mainComponent.addExtra(ChatColor.GRAY + "[" + itemStack.getItemMeta().getDisplayName() + ChatColor.GRAY + "]");
                 }else {
-                    component = new TextComponent(ChatColor.GRAY + "[" + itemStack.getType() + ChatColor.GRAY + "]");
+                    mainComponent.addExtra(ChatColor.GRAY + "[" + itemStack.getType() + ChatColor.GRAY + "]");
                 }
 
-                component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, contents));
+                mainComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, contents));
 
-                component.addExtra(ChatColor.DARK_GRAY + "  使用/fc来启用或禁用此功能");
+//                mainComponent.addExtra(ChatColor.DARK_GRAY + "  使用/fc来启用或禁用此功能");
 
-                player.spigot().sendMessage(component);
+                chatActionBar(player, "&8使用 /fc 来启用或禁用此功能");
+
+                player.spigot().sendMessage(mainComponent);
             }
         }
     }
+
 
 
     @EventHandler
@@ -92,7 +92,7 @@ public class CoreagesListener implements Listener {
 
         if (!coreagesUtils.hasPermission(player, loc, Flags.use)){
             event.setCancelled(true);
-            event.getPlayer().sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 你没有这个领地的 use 权限, 无法坐在此方块上!");
+            chat(player, "你没有这个领地的 use 权限, 无法坐在此方块上!");
         }
     }
 
@@ -129,11 +129,11 @@ public class CoreagesListener implements Listener {
                 // 不是放在上方，取消放置
                 event.setCancelled(true);
                 // 可以向玩家发送一些信息
-                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 此 物品 只能放置在方块的上方!");
+                chat(player, "此 物品 只能放置在方块的上方!");
             }
             if (event.getBlockAgainst().getType() == Material.STONE && coreagesUtils.loreKeywordHand(itemInHand, Collections.singletonList("燃料容量"))){
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "远古科技" + ChatColor.GRAY +" > 火箭 不能直接放置在发射台上, 请先替换为其他方块, 放置火箭后再替换为发射台!");
+                chat(player, "火箭 不能直接放置在发射台上, 请先替换为其他方块, 放置火箭后再替换为发射台!");
             }
         }
 
