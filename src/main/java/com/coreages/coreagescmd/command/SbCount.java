@@ -11,15 +11,6 @@ import java.util.List;
 
 import static com.coreages.coreagescmd.util.MsgUtils.chat;
 
-/**
- * ClassName: SbCommand
- * Package: com.coreages.coreagescmd
- * Description:
- *
- * @Author ExpertSneeker
- * @Create 2023/12/31 19:58
- * @Version 1.0
- */
 public class SbCount implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -28,7 +19,6 @@ public class SbCount implements CommandExecutor {
         if (sender instanceof Player) {
             // 强制转换为Player对象
             Player player = (Player) sender;
-
             // 获取半径
             int radius;
             if (args.length == 0){
@@ -42,16 +32,13 @@ public class SbCount implements CommandExecutor {
                     return true;
                 }
             }
-
             //防止半径过大卡服
             if(radius > 100 || radius < 1){
                 chat(player, "&c半径的范围应该在 1-100 之间");
                 return true;
             }
-
             // 获取半径内的实体列表
             List<Entity> nearbyEntities = player.getNearbyEntities(radius, radius, radius);
-
             // 用于统计盔甲架数量
             int armor_stand_count = 0;
             // 遍历实体列表

@@ -13,15 +13,6 @@ import java.util.List;
 import static com.coreages.coreagescmd.CoreagesCMD.coreagesUtils;
 import static com.coreages.coreagescmd.util.MsgUtils.chat;
 
-/**
- * ClassName: SbCommand
- * Package: com.coreages.coreagescmd
- * Description:
- *
- * @Author ExpertSneeker
- * @Create 2023/12/31 19:58
- * @Version 1.0
- */
 public class Sb implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -31,10 +22,8 @@ public class Sb implements CommandExecutor {
         if (sender instanceof Player) {
             // 强制转换为Player对象
             Player player = (Player) sender;
-
             // 检查的权限
             Flags check = Flags.destroy;
-
             // 获取玩家周围10格内的所有实体
             List<Entity> nearbyEntities = player.getNearbyEntities(10, 10, 10);
             int failcount = 0;

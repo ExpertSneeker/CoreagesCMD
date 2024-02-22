@@ -5,15 +5,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-/**
- * ClassName: MsgUtil
- * Package: com.coreages.coreagescmd.util
- * Description:
- *
- * @Author ExpertSneeker
- * @Create 2024/2/22 16:36
- * @Version 1.0
- */
 public class MsgUtils {
     public static String format(String msg) {
         if (msg == null)

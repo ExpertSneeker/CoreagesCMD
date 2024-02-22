@@ -11,22 +11,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-
 import static com.coreages.coreagescmd.CoreagesCMD.resApi;
-/**
- * ClassName: containsLoreKeyword
- * Package: com.coreages.coreagescmd.util
- * Description:
- *
- * @Author ExpertSneeker
- * @Create 2024/1/30 20:57
- * @Version 1.0
- */
+
 public class CoreagesUtils {
     //检测装备是否包含lore
     public boolean loreKeywordArmor(Player player, String keyword) {
         PlayerInventory inventory = player.getInventory();
-
         // 检查所有装备槽位（头盔、胸甲、护腿、靴子）
         ItemStack[] armors = inventory.getArmorContents();
         for (ItemStack armor : armors) {
@@ -53,7 +43,6 @@ public class CoreagesUtils {
         if (meta != null && meta.hasLore()) {
             //获取物品的lore
             List<String> lore = meta.getLore();
-
             // 检查lore中是否包含特定的字符串
             if (lore != null) {
                 for (String line : lore) {
@@ -75,9 +64,7 @@ public class CoreagesUtils {
             ClaimedResidence res = resApi.getResidenceManager().getByLoc(location);
             //获取领地权限
             FlagPermissions perms = res.getPermissions();
-
             return perms.playerHas(player, check, true);
-
         }
         return true; // 不在领地内
     }
